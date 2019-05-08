@@ -19,13 +19,14 @@ typedef struct
 snk snake[N];
 frt fruta;
 
-void inicio(int *tam, char campo[V][H]); //Iniciar todos los elementos
-void Intro_Campo(char campo[V][H]);  //Creacion del campo de juego
-void Intro_Datos(char campo[V][H], int tam); //Datos en matriz de campo
-void input(char campo[V][H], int *tam, int *muerto);  	//Comprobacion de si hemos muerto
-void update(char campo[V][H],int tam);  	//Borrar los datos de la matriz
-void Intro_Datos2(char campo[V][H], int tam);	//Hacer que el cuerpo siga a la cabeza. Cada elemento copia al anterior menos la cabeza
+void inicio(int *tam, char campo[V][H]);
+void Intro_Campo(char campo[V][H]);
+void Intro_Datos(char campo[V][H], int tam);
+void input(char campo[V][H], int *tam, int *muerto);
+void update(char campo[V][H],int tam);
+void Intro_Datos2(char campo[V][H], int tam);
 void loop (char campo[V][H], int tam);
+
 
 int main()
 {
@@ -38,8 +39,7 @@ int main()
 	return 0;
 }
 
-
-//Iniciar todos los elementos 
+//Iniciar todos los elementos
 void inicio (int *tam, char campo[V][H])
 {
 	int i;
@@ -94,3 +94,49 @@ void Intro_Campo(char campo[V][H])
 		}
 	}
 }
+
+//Datos en matriz de campo
+void Intro_Datos(char campo[V][H], int tam)
+{
+	int i;
+	for (i = 1; i < tam; i++)
+	{
+		snake[i].x = snake[i-1].x - 1;
+		snake[i].y = snake[i-1].y - 1;
+		
+		snake[i].imagen = '$';
+	}
+	snake[0].imagen = 'O';
+	
+	for(i = 0; i < tam; i++)
+	{
+		campo[snake[i].y][snake[i].x] - snake[i].imagen;
+	}
+	campo[fruta.y][fruta.x] - '&';
+}
+
+void draw(char campo[V][H])
+{
+	int i,j;
+	for (i = 0; i < V; i++)
+	{
+		for (j = 0; j < H; j++)
+		{
+			printf("%c", campo[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+void loop (char campo[V][H], int tam)
+{
+	int muerto = 0;
+	do
+	{
+		system("cls");// para limpiar
+		draw(campo);
+		input(campo,&tam,&muerto);
+		update(campo,tam);
+	}while(muerto == 0);
+}
+
